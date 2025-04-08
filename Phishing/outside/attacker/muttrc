@@ -1,0 +1,16 @@
+# IMAP configuration
+set imap_user = "elliotalderson@mrrobot.com"
+set imap_pass = "elliotalderson"  # No password needed for local setup
+set folder = "imaps://email_server:993"  # Ensure you use port 143 for non-TLS
+set spoolfile = "+INBOX"
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+
+# SMTP configuration
+set smtp_url = "smtp://elliotalderson:elliotalderson@email_server:587"  # STARTTLS
+set smtp_pass = "elliotalderson"  # Add SMTP password if required
+set from = "elliotalderson@mrrobot.com"
+set realname = "Elliot Alderson"
+
+set ssl_force_tls = yes  # Force TLS
+set ssl_starttls = yes    # STARTTLS should be disabled for port 465

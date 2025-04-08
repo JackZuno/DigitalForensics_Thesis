@@ -1,0 +1,72 @@
+## Architecture
+### Services
+- **Firewall**
+- **DMZ**
+    - email server (a real one that works locally)
+    - database server
+    - application server
+- **inside_router** (LAN)
+    - computer1
+    - computer2
+    - computer3
+    - computer4
+- **inside2_router** (WLAN)
+    - PC1
+    - PC2
+    - PC3
+    - PC4
+- **inside3_router** (Guest)
+    - device1
+    - device2
+    - device3
+    - device4
+- **outside_router**
+
+### Networks
+- **dmz_net**
+    - subnet: 192.168.1.0/24
+    - gateway: 192.168.1.254
+- **inside1_net**
+    - subnet: 192.168.2.0/24
+    - gateway: 192.168.2.254
+- **inside1_LAN**
+    - subnet: 10.20.0.0/24
+    - gateway: 10.20.0.254
+- **inside2_net**
+    - subnet: 192.168.3.0/24
+    - gateway: 192.168.3.254
+- **inside2_WLAN**
+    - subnet: 10.30.0.0/24
+    - gateway: 10.30.0.254
+- **inside3_net**
+    - subnet: 192.168.4.0/24
+    - gateway: 192.168.4.254
+- **inside3_guest**
+    - subnet: 10.40.0.0/24
+    - gateway: 10.40.0.254
+- **outside_net**
+    - subnet: 198.51.100.0/24
+    - gateway: 198.51.100.254
+- **attacker_net**
+    - subnet: 203.0.113.0/24
+    - gateway: 203.0.113.254
+- **external_net**
+    - subnet: 198.51.101.0/24
+    - gateway: 198.51.101.254
+- **internet**
+    - subnet: 203.0.114.0/24
+    - gateway: 203.0.114.254
+
+### Users (email and database)
+- **Computer**
+    - Computer1: Sarah Williams &rarr; sarahwilliams@e-corp.com
+    - Computer2: John Doe &rarr; johndoe@e-corp.com
+    - Computer3: Emily Carter &rarr; emilycarter@e-corp.com
+    - Computer4: James Foster &rarr; jamesfoster@e-corp.com
+- **PC**
+    - PC1: Sam Pointer &rarr; sampointer@e-corp.com
+    - PC2: Jake Thompson &rarr; jakethompson@e-corp.com
+    - PC3: Anna Moore &rarr; annamoore@e-corp.com
+    - PC4: Olivia Murphy &rarr; oliviamurphy@e-corp.com
+- **Attacker** (Only email)
+    - Attacker: Elliot Alderson &rarr; elliotalderson@mrrobot.com

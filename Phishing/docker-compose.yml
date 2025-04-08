@@ -1,0 +1,367 @@
+services:
+  firewall:
+    build: ./firewall
+    container_name: firewall
+    privileged: true  # Required for iptables access
+    networks:
+      dmz_net:
+        ipv4_address: 192.168.1.1
+      inside1_net:
+        ipv4_address: 192.168.2.1
+      inside2_net:
+        ipv4_address: 192.168.3.1
+      inside3_net:
+        ipv4_address: 192.168.4.1
+      outside_net:
+        ipv4_address: 198.51.100.1
+      external_net:
+        ipv4_address: 198.51.101.1
+    cap_add:  
+      - NET_ADMIN
+
+  inside_router:
+    build: ./inside_router
+    container_name: inside_router
+    privileged: true  # Required for iptables access
+    networks:
+      inside1_net:
+        ipv4_address: 192.168.2.2
+      inside1_LAN:
+        ipv4_address: 10.20.0.253
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - firewall
+
+  computer1:
+    build: ./LAN/computer1
+    container_name: computer1
+    privileged: true
+    networks:
+      inside1_LAN:
+        ipv4_address: 10.20.0.1
+    cap_add:  
+      - NET_ADMIN
+      - SYS_TIME
+    depends_on:
+      - inside_router
+    tty: true
+
+  computer2:
+    build: ./LAN/computer2
+    container_name: computer2
+    privileged: true
+    networks:
+      inside1_LAN:
+        ipv4_address: 10.20.0.2
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside_router
+
+  computer3:
+    build: ./LAN/computer3
+    container_name: computer3
+    privileged: true
+    networks:
+      inside1_LAN:
+        ipv4_address: 10.20.0.3
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside_router
+
+  computer4:
+    build: ./LAN/computer4
+    container_name: computer4
+    privileged: true
+    networks:
+      inside1_LAN:
+        ipv4_address: 10.20.0.4
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside_router
+
+  inside2_router:
+    build: ./inside2_router
+    container_name: inside2_router
+    privileged: true  # Required for iptables access
+    networks:
+      inside2_net:
+        ipv4_address: 192.168.3.2
+      inside2_WLAN:
+        ipv4_address: 10.30.0.253
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - firewall
+
+  pc1:
+    build: ./WLAN/PC1
+    container_name: pc1
+    privileged: true
+    networks:
+      inside2_WLAN:
+        ipv4_address: 10.30.0.1
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside2_router
+
+  pc2:
+    build: ./WLAN/PC2
+    container_name: pc2
+    privileged: true
+    networks:
+      inside2_WLAN:
+        ipv4_address: 10.30.0.2
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside2_router
+
+  pc3:
+    build: ./WLAN/PC3
+    container_name: pc3
+    privileged: true
+    networks:
+      inside2_WLAN:
+        ipv4_address: 10.30.0.3
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside2_router
+
+  pc4:
+    build: ./WLAN/PC4
+    container_name: pc4
+    privileged: true
+    networks:
+      inside2_WLAN:
+        ipv4_address: 10.30.0.4
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside2_router
+
+  inside3_router:
+    build: ./inside3_router
+    container_name: inside3_router
+    privileged: true  # Required for iptables access
+    networks:
+      inside3_net:
+        ipv4_address: 192.168.4.2
+      inside3_guest:
+        ipv4_address: 10.40.0.253
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - firewall
+
+  device1:
+    build: ./guest/device1
+    container_name: device1
+    privileged: true
+    networks:
+      inside3_guest:
+        ipv4_address: 10.40.0.1
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside3_router
+
+  device2:
+    build: ./guest/device2
+    container_name: device2
+    privileged: true
+    networks:
+      inside3_guest:
+        ipv4_address: 10.40.0.2
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside3_router
+
+  device3:
+    build: ./guest/device3
+    container_name: device3
+    privileged: true
+    networks:
+      inside3_guest:
+        ipv4_address: 10.40.0.3
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside3_router
+
+  device4:
+    build: ./guest/device4
+    container_name: device4
+    privileged: true
+    networks:
+      inside3_guest:
+        ipv4_address: 10.40.0.4
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - inside3_router
+
+  database_server:
+    build: ./dmz/database_server
+    container_name: database_server
+    privileged: true
+    networks:
+      dmz_net:
+        ipv4_address: 192.168.1.2
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - firewall
+    ports:
+      - "5432:5432"   # Expose PostgreSQL port
+
+  app_server:
+    build: ./dmz/app_server
+    container_name: app_server
+    privileged: true
+    networks:
+      dmz_net:
+        ipv4_address: 192.168.1.3
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - firewall
+
+  email_server:
+    build: ./dmz/email_server
+    container_name: email_server
+    privileged: true
+    ports:
+      - "25:25"  # SMTP Port
+      - "465:465" # SMTP over SSL/TLS (SMTPS)
+      - "587:587" # SMTP over SSL/TLS (SMTPS) with STARTTLS
+      - "143:143"   # IMAP Port for email retrieval
+      - "993:993" # IMAP over SSL/TLS (IMAPS)
+    volumes:
+      - ./maildata:/var/mail
+    networks:
+      dmz_net:
+        ipv4_address: 192.168.1.4
+    cap_add:  
+      - NET_ADMIN
+      - SYS_TIME
+    depends_on:
+      - firewall
+
+  outside_router:
+    build: ./outside_router
+    container_name: outside_router
+    privileged: true
+    networks:
+      outside_net:
+        ipv4_address: 198.51.100.2
+      attacker_net:
+        ipv4_address: 203.0.113.1
+      internet:
+        ipv4_address: 203.0.114.1
+    cap_add:
+      - NET_ADMIN
+
+  gophish:
+    build: ./outside/gophish
+    container_name: gophish
+    privileged: true
+    user: root
+    ports:
+      - "3333:3333"  # Web interface
+      - "80:80"      # HTTP for phishing page
+      - "443:443"    # HTTPS for phishing page (if used)
+    restart: unless-stopped
+    networks:
+      attacker_net:
+        ipv4_address: 203.0.113.3
+    cap_add:  
+      - NET_ADMIN
+    depends_on:
+      - outside_router
+
+  attacker:
+    build: ./outside/attacker
+    container_name: attacker
+    privileged: true
+    networks:
+      attacker_net:
+        ipv4_address: 203.0.113.2
+    cap_add:
+      - NET_ADMIN
+
+networks:
+  dmz_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+          gateway: 192.168.1.254
+  inside1_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
+          gateway: 192.168.2.254
+  inside1_LAN:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.0.0/24
+          gateway: 10.20.0.254
+  inside2_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.3.0/24
+          gateway: 192.168.3.254
+  inside2_WLAN:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.30.0.0/24
+          gateway: 10.30.0.254
+  inside3_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.4.0/24
+          gateway: 192.168.4.254
+  inside3_guest:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.40.0.0/24
+          gateway: 10.40.0.254
+  outside_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 198.51.100.0/24
+          gateway: 198.51.100.254
+  attacker_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 203.0.113.0/24
+          gateway: 203.0.113.254
+  external_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 198.51.101.0/24
+          gateway: 198.51.101.254
+  internet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 203.0.114.0/24
+          gateway: 203.0.114.254
+
+# ctrl + q to comment and uncomment

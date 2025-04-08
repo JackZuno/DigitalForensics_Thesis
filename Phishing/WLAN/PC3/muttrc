@@ -1,0 +1,22 @@
+# IMAP configuration
+set imap_user = "annamoore@e-corp.com"
+set imap_pass = "annamoore"  # No password needed for local setup
+set folder = "imaps://email_server:993"  # Ensure you use port 143 for non-TLS
+set spoolfile = "+INBOX"
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+
+# SMTP configuration
+set smtp_url = "smtp://annamoore:annamoore@email_server:587"  # STARTTLS
+set smtp_pass = "annamoore"  # Add SMTP password if required
+set from = "annamoore@e-corp.com"
+set realname = "Anna Moore"
+
+set ssl_force_tls = yes  # Force TLS
+set ssl_starttls = yes    # STARTTLS should be disabled for port 465
+
+# Enable including the original message in replies
+set include = yes
+
+# Optionally, set reply-to address to the sender of the email
+set reply_to = yes
