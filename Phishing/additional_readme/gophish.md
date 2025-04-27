@@ -29,7 +29,7 @@ To see an example of a group look here: **[users and groups](gophish/users_and_g
 #### Campaigns
 With all the components in place, you’re now ready to launch the **campaign**. You’ll give your campaign a name, choose the templates and landing pages you’ve created, and set the SMTP profile. You can also schedule the emails to be sent out immediately or at a specific time. Once launched, GoPhish begins sending the phishing emails to the recipients, tracking how they interact with them in real time. \
 The moment your campaign is live, the dashboard will start displaying data on user interactions. You’ll be able to see who opened the email, who clicked on the link, and who submitted any information on the landing page (and if selected the option it will also show the data). This real-time monitoring is essential for understanding the effectiveness of your campaign and gauging how well-prepared your targets are against phishing threats. When the campaign concludes, GoPhish will generate a detailed report summarizing all these interactions. This report will help you analyze the results and determine which areas of your organization might need more training or better security measures. \
-To see how I set up a gophish campaign look here: **[campaign](campaign/campaign.md)**.
+To see how I set up a gophish campaign (and the results) look here: **[campaign](campaign/campaign.md)**.
 
 ### Get Scammed
 ### Victims
